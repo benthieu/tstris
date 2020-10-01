@@ -9,6 +9,8 @@ export class Tstris {
     constructor(private canvas: CanvasRenderingContext2D) {
         this.playground = new Playground(this.rows, this.cols);
         this.painter = new Painter(canvas);
-        this.painter.drawPlayground(this.playground);
+        setInterval(() => {
+            this.painter.drawPlayground(this.playground);
+        }, 1000);
     }
 }

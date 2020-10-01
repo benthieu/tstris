@@ -1,3 +1,4 @@
+import {GridPointer} from './grid-pointer';
 import {Playground} from './playground';
 
 export class Painter {
@@ -9,22 +10,25 @@ export class Painter {
     }
 
     public drawPlayground(playground: Playground): void {
-        const rows = playground.getPlayground().length;
-        const cols = playground.getPlayground()[0].length;
         
-        const boxHeight = Math.floor(this.height/rows);
-        const boxWidth = Math.floor(this.width/cols);
+        const boxHeight = Math.floor(this.height/playground.rows);
+        const boxWidth = Math.floor(this.width/playground.cols);
 
-        playground.getPlayground().map((row, rowIndex) => {
-            row.map((isDrawn, colIndex) => {
-                const positionX = boxWidth * colIndex;
-                const positionY = boxHeight * rowIndex;
+        this.canvasRendering.clearRect(0, 0, this.width, this.height);
+
+        for (let r = 0; r < playground.rows; r++) {
+            for (let c = 0; c < playground.cols; c++) {
+                const positionX = boxWidth * c;
+                const positionY = boxHeight * r;
+                const isDrawn = playground.getPlayground().find((pointer: GridPointer) => {
+                    return pointer.x === c && pointer.y === r;
+                });
                 if (isDrawn) {
                     this.canvasRendering.fillRect(positionX, positionY, boxWidth, boxHeight);
                 } else {
                     this.canvasRendering.strokeRect(positionX, positionY, boxWidth, boxHeight);
                 }
-            });
-        });
+            }
+        }
     }
 }
