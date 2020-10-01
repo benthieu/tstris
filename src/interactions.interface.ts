@@ -1,7 +1,5 @@
-export interface Interactions {
-    rotateLeft(): void;
-    
-    rotateRight(): void;
+export interface Interactions {    
+    rotate(): void;
     
     moveRight(): void;
     

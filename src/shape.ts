@@ -17,12 +17,8 @@ export class Shape implements Interactions {
         console.log('this', this);
     }
 
-    public rotateLeft(): void {
-
-    }
-
-    public rotateRight(): void {
-
+    public rotate(): void {
+        this.currentRotation = this.currentRotation + 1 >= this.rotations.length ? 0 : this.currentRotation+1;
     }
 
     public moveRight(): void {
