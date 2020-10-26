@@ -43,11 +43,6 @@ export class Shape implements Interactions {
         });
     }
 
-    public drawShape(): void {
-        this.playground.shapePlayground = this.calculateCoordinatesFromRotation();
-        console.log('this.playground.shapePlayground', this.playground.shapePlayground);
-    }
-
     private getCurrentRotation(): Array<GridPointer> {
         return this.rotations[this.currentRotation];
     }

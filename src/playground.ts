@@ -28,7 +28,7 @@ export class Playground implements Interactions {
     public insertNewShape(): void {
         this.shape = this.getRandomShape();
         this.shape.initPointer();
-        this.shape.drawShape();
+        this.shapePlayground = this.shape.calculateCoordinatesFromRotation();
     }
 
     public getPlayground(): Array<GridPointer> {
@@ -44,19 +44,19 @@ export class Playground implements Interactions {
     }
     public rotate(): void {
         this.shape.rotate();
-        this.shape.drawShape();
+        this.shapePlayground = this.shape.calculateCoordinatesFromRotation();
     }
     public moveRight(): void {
         this.shape.moveRight();
-        this.shape.drawShape();
+        this.shapePlayground = this.shape.calculateCoordinatesFromRotation();
     }
     public moveLeft(): void {
         this.shape.moveLeft();
-        this.shape.drawShape();
+        this.shapePlayground = this.shape.calculateCoordinatesFromRotation();
     }
     public moveDown(): void {
         this.shape.moveDown();
-        this.shape.drawShape();
+        this.shapePlayground = this.shape.calculateCoordinatesFromRotation();
     }
 
     private getRandomShape(): Shape {
