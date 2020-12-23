@@ -5,6 +5,7 @@ import {Playground} from './playground';
 
 export class Events {
     private keyDownInterval: NodeJS.Timeout;
+    private moveDownInterval: NodeJS.Timeout;
     private keyDown = fromEvent<KeyboardEvent>(document, 'keydown');
     private keyUp = fromEvent<KeyboardEvent>(document, 'keyup');
 
@@ -26,7 +27,15 @@ export class Events {
         }, 500);
     }
 
+    private setMoveDownInterval(): void {
+        this.moveDownInterval = setInterval(() => {
+            this.playground.moveDown();
+            this.painter.drawPlayground();
+        }, 750);
+    }
+
     private registerEvents() {
+        this.setMoveDownInterval();
         this.keyEvents.subscribe((event: KeyboardEvent) => {
             if (event.type === "keydown" && !this.keyDownInterval) {
                 switch (event.code) {
@@ -40,10 +49,14 @@ export class Events {
                         this.startEventAndInterval(() => this.playground.moveRight());
                         break;
                     case 'ArrowDown':
+                        clearInterval(this.moveDownInterval);
                         this.startEventAndInterval(() => this.playground.moveDown());
                         break;
                 }
             } else if (event.type === "keyup") {
+                if (event.code === 'ArrowDown') {
+                    this.setMoveDownInterval();
+                }
                 clearInterval(this.keyDownInterval);
                 this.keyDownInterval = null;
             }
