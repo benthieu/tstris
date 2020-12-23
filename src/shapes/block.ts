@@ -9,14 +9,14 @@ export class Block extends Shape {
     1:  o  o
         o  o
     */
-    constructor(playground: Playground) {
-        super(playground, [
+    constructor() {
+        super([
             [
                 new GridPointer(0, 0),
                 new GridPointer(0, 1),
                 new GridPointer(1, 0),
                 new GridPointer(1, 1),
             ]
-        ], 2);
+        ], 2, '#ff5722');
     }
 }

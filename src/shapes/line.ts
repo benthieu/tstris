@@ -11,8 +11,8 @@ export class Line extends Shape {
         x  o  x  x          x  x  x  x          x  x  o  x          x  x  x  x
         x  o  x  x          x  x  x  x          x  x  o  x          x  x  x  x
     */
-    constructor(playground: Playground) {
-        super(playground, [
+    constructor() {
+        super([
             [
                 new GridPointer(1, 0),
                 new GridPointer(1, 1),
@@ -37,6 +37,6 @@ export class Line extends Shape {
                 new GridPointer(2, 1),
                 new GridPointer(3, 1)
             ]
-        ], 4);
+        ], 4, '#009688');
     }
 }

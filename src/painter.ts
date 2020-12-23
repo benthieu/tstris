@@ -4,15 +4,18 @@ import {Playground} from './playground';
 export class Painter {
     private width: number;
     private height: number;
+    private defaultFillStyle = '#FFF';
+    private defaultStrokeStyle = '#FFF';
     constructor(private canvasRendering: CanvasRenderingContext2D, private playground: Playground) {
         this.width = canvasRendering.canvas.width;
         this.height = canvasRendering.canvas.height;
     }
 
     public drawPlayground(): void {
-        
-        const boxHeight = Math.floor(this.height/this.playground.rows);
-        const boxWidth = Math.floor(this.width/this.playground.cols);
+        const boxHeight = Math.floor(this.height / this.playground.rows);
+        const boxWidth = Math.floor(this.width / this.playground.cols);
+        this.canvasRendering.fillStyle = this.defaultFillStyle;
+        this.canvasRendering.strokeStyle = this.defaultStrokeStyle;
 
         this.canvasRendering.clearRect(0, 0, this.width, this.height);
 
@@ -24,6 +27,7 @@ export class Painter {
                     return pointer.x === c && pointer.y === r;
                 });
                 if (isDrawn) {
+                    this.canvasRendering.fillStyle = isDrawn.color ? isDrawn.color : this.defaultFillStyle;
                     this.canvasRendering.fillRect(positionX, positionY, boxWidth, boxHeight);
                 } else {
                     this.canvasRendering.strokeRect(positionX, positionY, boxWidth, boxHeight);

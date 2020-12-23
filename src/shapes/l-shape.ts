@@ -10,8 +10,8 @@ export class LShape extends Shape {
         x  o  x         o  o  o         x  o  x         o  o  o
         x  o  x         x  x  o         o  o  x         x  x  x
     */
-    constructor(playground: Playground) {
-        super(playground, [
+    constructor() {
+        super([
             [
                 new GridPointer(1, 0),
                 new GridPointer(2, 0),
@@ -36,6 +36,6 @@ export class LShape extends Shape {
                 new GridPointer(1, 1),
                 new GridPointer(2, 1)
             ]
-        ], 3);
+        ], 3, '#8bc34a');
     }
 }

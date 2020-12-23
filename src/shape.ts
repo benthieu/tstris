@@ -1,53 +1,65 @@
-import {from} from '../node_modules/rxjs/index';
 import {GridPointer} from './grid-pointer';
 import {Interactions} from './interactions.interface';
 import {Playground} from './playground';
 
 export class Shape implements Interactions {
-    private currentRotation = 0;
-    private pointer: GridPointer;
+    public currentRotation = 0;
+    public pointer: GridPointer;
+    private playground: Playground;
 
-    constructor(private playground: Playground, private rotations: Array<Array<GridPointer>>, private size: number) {}
+    constructor(
+        private rotations: Array<Array<GridPointer>>,
+        private size: number,
+        private color: string = "#FFF") { }
 
     public initPointer(): void {
-        const playgroundCols = this.playground.cols;
-        const fromLeft = Math.ceil((playgroundCols - (this.size)) / 2);
-        this.pointer = new GridPointer(fromLeft, -(this.size - 1));
-        console.log('this.pointer', this.pointer);
-        console.log('this', this);
+        const fromLeft = Math.floor((this.playground.cols - (this.size)) / 2);
+        this.pointer = new GridPointer(fromLeft, - (this.size - 2));
     }
 
-    public rotate(): void {
-        this.currentRotation = this.currentRotation + 1 >= this.rotations.length ? 0 : this.currentRotation+1;
+    public setPlayground(playground: Playground): void {
+        this.playground = playground;
     }
 
-    public moveRight(): void {
-        this.pointer.x++;
+    public rotate(): Shape {
+        this.currentRotation = this.currentRotation + 1 >= this.rotations.length ? 0 : this.currentRotation + 1;
+        return this;
     }
 
-    public moveLeft(): void {
-        this.pointer.x--;
+    public moveRight(): Shape {
+        this.pointer.moveRight();
+        return this;
     }
 
-    public moveDown(): void {
-        this.pointer.y++;
+    public moveLeft(): Shape {
+        this.pointer.moveLeft();
+        return this;
     }
 
-    public calculateCoordinatesFromRotation(): Array<GridPointer> {
+    public moveDown(): Shape {
+        this.pointer.moveDown();
+        return this;
+    }
+
+    public copy(): Shape {
+        const newShape = new Shape(this.rotations, this.size);
+        newShape.currentRotation = this.currentRotation;
+        newShape.pointer = this.pointer.copy();
+        return newShape;
+    }
+
+    public calculateCoordinates(calculationPointer: GridPointer = this.pointer): Array<GridPointer> {
         const currentRotation = this.getCurrentRotation();
         return currentRotation.map((currentField: GridPointer) => {
             return {
-                x: this.pointer.x + currentField.x,
-                y: this.pointer.y + currentField.y
+                x: calculationPointer.x + currentField.x,
+                y: calculationPointer.y + currentField.y,
+                color: this.color
             } as GridPointer;
         });
     }
 
     private getCurrentRotation(): Array<GridPointer> {
         return this.rotations[this.currentRotation];
-    }
-
-    private detectCollision(): boolean {
-        return false;
     }
 }

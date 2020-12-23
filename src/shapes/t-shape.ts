@@ -10,8 +10,8 @@ export class TShape extends Shape {
         o  o  o         x  o  o         o  o  o         o  o  x
         x  x  x         x  o  x         x  o  x         x  o  x
     */
-    constructor(playground: Playground) {
-        super(playground, [
+    constructor() {
+        super([
             [
                 new GridPointer(0, 1),
                 new GridPointer(1, 0),
@@ -36,6 +36,6 @@ export class TShape extends Shape {
                 new GridPointer(2, 1),
                 new GridPointer(1, 2)
             ]
-        ], 3);
+        ], 3, '#673ab7');
     }
 }

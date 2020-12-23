@@ -8,10 +8,11 @@ export class Tstris {
     private events: Events;
     private cols = 8;
     private rows = 15;
-    constructor(private canvas: CanvasRenderingContext2D) {
+    constructor(canvas: CanvasRenderingContext2D) {
         this.playground = new Playground(this.rows, this.cols);
         this.painter = new Painter(canvas, this.playground);
         this.events = new Events(this.playground, this.painter);
+        this.playground.startNewGame();
         this.painter.drawPlayground();
     }
 }

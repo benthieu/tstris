@@ -10,8 +10,8 @@ export class LMirrorShape extends Shape {
         x  o  x         o  o  o         x  o  x         o  o  o
         x  o  x         x  x  x         x  o  o         o  x  x
     */
-    constructor(playground: Playground) {
-        super(playground, [
+    constructor() {
+        super([
             [
                 new GridPointer(0, 0),
                 new GridPointer(1, 0),
@@ -36,6 +36,6 @@ export class LMirrorShape extends Shape {
                 new GridPointer(2, 1),
                 new GridPointer(0, 2)
             ]
-        ], 3);
+        ], 3, '#ffc107');
     }
 }

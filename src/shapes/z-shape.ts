@@ -10,8 +10,8 @@ export class ZShape extends Shape {
         o  o  x         o  o  x         x  o  o         x  o  o
         x  o  o         o  x  x         x  x  x         x  o  x
     */
-    constructor(playground: Playground) {
-        super(playground, [
+    constructor() {
+        super([
             [
                 new GridPointer(0, 1),
                 new GridPointer(1, 1),
@@ -36,6 +36,6 @@ export class ZShape extends Shape {
                 new GridPointer(1, 2),
                 new GridPointer(2, 1)
             ]
-        ], 3);
+        ], 3, '#e91e63');
     }
 }

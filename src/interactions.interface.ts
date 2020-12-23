@@ -1,4 +1,4 @@
-export interface Interactions {    
+export interface Interactions {
     rotate(): void;
     
     moveRight(): void;

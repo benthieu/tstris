@@ -10,8 +10,8 @@ export class SShape extends Shape {
         x  o  o         o  o  x         o  o  x         x  o  o
         o  o  x         x  o  x         x  x  x         x  x  o
     */
-    constructor(playground: Playground) {
-        super(playground, [
+    constructor() {
+        super([
             [
                 new GridPointer(1, 1),
                 new GridPointer(2, 1),
@@ -36,6 +36,6 @@ export class SShape extends Shape {
                 new GridPointer(2, 1),
                 new GridPointer(2, 2)
             ]
-        ], 3);
+        ], 3, '#03a9f4');
     }
 }
