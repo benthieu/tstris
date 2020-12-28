@@ -1,25 +1,11 @@
 import {GridPointer} from './grid-pointer';
 import {Interactions} from './interactions.interface';
-import {Shape} from './shape';
-import {Block} from './shapes/block';
-import {LMirrorShape} from './shapes/l-mirror-shape';
-import {LShape} from './shapes/l-shape';
-import {Line} from './shapes/line';
-import {SShape} from './shapes/s-shape';
-import {TShape} from './shapes/t-shape';
-import {ZShape} from './shapes/z-shape';
+import {ShapeContainer} from './shape-container';
+import {tsConfig} from './ts-config';
 
 export class Playground implements Interactions {
     private allPointers: Array<GridPointer>;
-    private shape: Shape;
-    public rows: number;
-    public cols: number;
-
-    constructor(rows: number,
-        cols: number) {
-        this.rows = rows;
-        this.cols = cols;
-    }
+    private shape: ShapeContainer;
 
     public startNewGame(): void {
         this.allPointers = new Array<GridPointer>();
@@ -28,7 +14,6 @@ export class Playground implements Interactions {
 
     public insertNewShape(): void {
         this.shape = this.getRandomShape();
-        this.shape.setPlayground(this);
         this.shape.initPointer();
         if (this.detectCollisionOrOutOfBounds(this.shape)) {
             this.startNewGame();
@@ -91,12 +76,12 @@ export class Playground implements Interactions {
         }
     }
 
-    private detectCollisionOrOutOfBounds(shape: Shape): boolean {
+    private detectCollisionOrOutOfBounds(shape: ShapeContainer): boolean {
         const outOfBounds = shape.calculateCoordinates().find((pointer: GridPointer) => {
             return (
                 (pointer.x < 0) ||
-                (pointer.x >= this.cols) ||
-                (pointer.y >= this.rows)
+                (pointer.x >= tsConfig.cols) ||
+                (pointer.y >= tsConfig.rows)
             );
         });
         const collision = shape.calculateCoordinates().find((pointer: GridPointer) => {
@@ -123,26 +108,19 @@ export class Playground implements Interactions {
 
     private detectFullLine(): Array<number> {
         const fullLines = new Array<number>();
-        for (let row = 0; row < this.rows; row++) {
+        for (let row = 0; row < tsConfig.rows; row++) {
             const foundPointers = this.allPointers.filter((playgroundPointer: GridPointer) => {
                 return playgroundPointer.y === row;
             });
-            if (foundPointers.length === this.cols) {
+            if (foundPointers.length === tsConfig.cols) {
                 fullLines.push(row);
             }
         }
         return fullLines;
     }
 
-    private getRandomShape(): Shape {
-        switch (Math.round(Math.random() * 6)) {
-            case 0: return new Block();
-            case 1: return new LMirrorShape();
-            case 2: return new LShape();
-            case 3: return new Line();
-            case 4: return new SShape();
-            case 5: return new TShape();
-            case 6: return new ZShape();
-        }
+    private getRandomShape(): ShapeContainer {
+        const shape = tsConfig.shapes[Math.round(Math.random() * 6)];
+        return new ShapeContainer(shape.rotations, shape.size, shape.color);
     }
 }
