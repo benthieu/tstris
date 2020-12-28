@@ -1,3 +1,5 @@
+import {Observable} from 'rxjs';
+import {Events} from './events';
 import {GridPointer} from './grid-pointer';
 import {Interactions} from './interactions.interface';
 import {ShapeContainer} from './shape-container';
@@ -6,10 +8,19 @@ import {tsConfig} from './ts-config';
 export class Playground implements Interactions {
     private allPointers: Array<GridPointer>;
     private shape: ShapeContainer;
+    private events: Events;
+
+    constructor() {
+        this.events = new Events(this);
+    }
 
     public startNewGame(): void {
         this.allPointers = new Array<GridPointer>();
         this.insertNewShape();
+    }
+
+    public subscribeToChanges(): Observable<boolean> {
+        return this.events.subscribeToChanges();
     }
 
     public insertNewShape(): void {
@@ -27,9 +38,6 @@ export class Playground implements Interactions {
         ];
     }
 
-    public getCurrentShape() {
-        return this.shape;
-    }
     public moveRight(): void {
         if (!this.detectCollisionOrOutOfBounds(this.shape.copy().moveRight())) {
             this.shape.moveRight();

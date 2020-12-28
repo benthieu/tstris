@@ -1,6 +1,6 @@
 import {GridPointer} from './grid-pointer';
 import {Shape} from './shape';
-console.log('tsconfig');
+
 export const tsConfig = {
     canvas: (document.getElementById('main') as HTMLCanvasElement).getContext('2d'),
     rows: 15,

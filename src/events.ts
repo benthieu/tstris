@@ -1,6 +1,5 @@
-import {fromEvent, merge, Observable} from 'rxjs';
+import {fromEvent, merge, Observable, Subject} from 'rxjs';
 import {distinctUntilChanged} from 'rxjs/operators';
-import {Painter} from './painter';
 import {Playground} from './playground';
 
 export class Events {
@@ -9,12 +8,17 @@ export class Events {
     private keyDown = fromEvent<KeyboardEvent>(document, 'keydown');
     private keyUp = fromEvent<KeyboardEvent>(document, 'keyup');
     private keyEvents: Observable<KeyboardEvent>;
+    public tick$: Subject<boolean> = new Subject<boolean>();
 
-    constructor(private playground: Playground, private painter: Painter) {
+    constructor(private playground: Playground) {
         this.keyEvents = merge(this.keyDown, this.keyUp).pipe(
             distinctUntilChanged((a, b) => a.code === b.code && a.type === b.type)
         );
         this.registerEvents();
+    }
+
+    public subscribeToChanges(): Observable<boolean> {
+        return this.tick$.asObservable();
     }
 
     private registerEvents() {
@@ -49,17 +53,17 @@ export class Events {
 
     private startEventAndInterval(event: any): void {
         event();
-        this.painter.drawPlayground();
+        this.tick$.next(true);
         this.keyPressedInterval = setInterval(() => {
             event();
-            this.painter.drawPlayground();
+            this.tick$.next(true);
         }, 500);
     }
 
     private setMoveDownInterval(): void {
         this.moveDownInterval = this.moveDownInterval ? this.moveDownInterval : setInterval(() => {
             this.playground.moveDown();
-            this.painter.drawPlayground();
+            this.tick$.next(true);
         }, 750);
     }
 }
