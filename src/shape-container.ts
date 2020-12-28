@@ -37,7 +37,7 @@ export class ShapeContainer implements Interactions {
     }
 
     public copy(): ShapeContainer {
-        const newShape = new ShapeContainer(this.rotations, this.size);
+        const newShape = new ShapeContainer(this.rotations, this.size, this.color);
         newShape.currentRotation = this.currentRotation;
         newShape.pointer = this.pointer.copy();
         return newShape;

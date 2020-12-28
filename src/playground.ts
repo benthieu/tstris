@@ -34,7 +34,8 @@ export class Playground implements Interactions {
     public getPlayground(): Array<GridPointer> {
         return [
             ...this.allPointers,
-            ...this.shape.calculateCoordinates()
+            ...this.shape.calculateCoordinates(),
+            ...this.getPrediction()
         ];
     }
 
@@ -55,6 +56,11 @@ export class Playground implements Interactions {
             this.allPointers.push(...this.shape.calculateCoordinates());
             this.detectAndRemoveFullLine();
             this.insertNewShape();
+        }
+    }
+    public moveAllTheWayDown(): void {
+        while (!this.detectCollisionOrOutOfBounds(this.shape.copy().moveDown())) {
+            this.shape.moveDown();
         }
     }
 
@@ -130,5 +136,16 @@ export class Playground implements Interactions {
     private getRandomShape(): ShapeContainer {
         const shape = tsConfig.shapes[Math.round(Math.random() * 6)];
         return new ShapeContainer(shape.rotations, shape.size, shape.color);
+    }
+
+    private getPrediction(): Array<GridPointer> {
+        const prediction = this.shape.copy();
+        while (!this.detectCollisionOrOutOfBounds(prediction.copy().moveDown())) {
+            prediction.moveDown();
+        }
+        return prediction.calculateCoordinates().map((pointer: GridPointer) => {
+            pointer.onlyOutline = true;
+            return pointer;
+        });
     }
 }
