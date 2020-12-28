@@ -9,7 +9,7 @@ export class Events {
     private keyDown = fromEvent<KeyboardEvent>(document, 'keydown');
     private keyUp = fromEvent<KeyboardEvent>(document, 'keyup');
     private keyEvents: Observable<KeyboardEvent>;
-    public tick$: Subject<boolean> = new Subject<boolean>();
+    private tick$: Subject<boolean> = new Subject<boolean>();
 
     constructor(private playground: Playground) {
         this.keyEvents = merge(this.keyDown, this.keyUp).pipe(
@@ -18,7 +18,7 @@ export class Events {
         this.registerEvents();
     }
 
-    public subscribeToChanges(): Observable<boolean> {
+    public tick(): Observable<boolean> {
         return this.tick$.asObservable();
     }
 
@@ -42,6 +42,9 @@ export class Events {
                         this.startEventAndInterval(() => this.playground.moveDown());
                         this.moveDownPressedTimeout = setTimeout(() => {
                             this.playground.moveAllTheWayDown();
+                            clearInterval(this.moveDownInterval);
+                            this.moveDownInterval = null;
+                            this.setMoveDownInterval();
                             this.tick$.next(true);
                         }, 1000);
                         break;

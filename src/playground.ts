@@ -1,4 +1,5 @@
-import {Observable} from 'rxjs';
+import {BehaviorSubject, Observable, ReplaySubject, Subject} from 'rxjs';
+import {distinctUntilChanged} from 'rxjs/operators';
 import {Events} from './events';
 import {GridPointer} from './grid-pointer';
 import {Interactions} from './interactions.interface';
@@ -9,6 +10,8 @@ export class Playground implements Interactions {
     private allPointers: Array<GridPointer>;
     private shape: ShapeContainer;
     private events: Events;
+    private score$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+    private nextShapes$: BehaviorSubject<Array<number>> = new BehaviorSubject<Array<number>>([]);
 
     constructor() {
         this.events = new Events(this);
@@ -16,15 +19,34 @@ export class Playground implements Interactions {
 
     public startNewGame(): void {
         this.allPointers = new Array<GridPointer>();
+        this.nextShapes$.next([
+            this.getRandomNumber(6),
+            this.getRandomNumber(6),
+            this.getRandomNumber(6)
+        ]);
+        this.score$.next(0);
         this.insertNewShape();
     }
 
-    public subscribeToChanges(): Observable<boolean> {
-        return this.events.subscribeToChanges();
+    public tick(): Observable<boolean> {
+        return this.events.tick();
+    }
+
+    public score(): Observable<number> {
+        return this.score$.asObservable().pipe(
+            distinctUntilChanged()
+        );
+    }
+
+    public nextShapes(): Observable<Array<number>> {
+        return this.nextShapes$.asObservable();
     }
 
     public insertNewShape(): void {
-        this.shape = this.getRandomShape();
+        const nextShapes = this.nextShapes$.getValue();
+        this.shape = this.getShapeByIndex(nextShapes.splice(0, 1)[0]);
+        nextShapes.push(this.getRandomNumber(6));
+        this.nextShapes$.next(nextShapes);
         this.shape.initPointer();
         if (this.detectCollisionOrOutOfBounds(this.shape)) {
             this.startNewGame();
@@ -107,7 +129,9 @@ export class Playground implements Interactions {
     }
 
     private detectAndRemoveFullLine(): void {
-        this.detectFullLine().forEach((fullRow: number) => {
+        const fullLines = this.detectFullLine();
+        this.score$.next(this.score$.getValue() + fullLines.length * tsConfig.cols);
+        fullLines.forEach((fullRow: number) => {
             this.allPointers = this.allPointers.filter((playgroundPointer: GridPointer) => {
                 return playgroundPointer.y !== fullRow;
             });
@@ -133,9 +157,17 @@ export class Playground implements Interactions {
         return fullLines;
     }
 
-    private getRandomShape(): ShapeContainer {
-        const shape = tsConfig.shapes[Math.round(Math.random() * 6)];
+    private getShapeByIndex(index: number): ShapeContainer {
+        const shape = tsConfig.shapes[index];
         return new ShapeContainer(shape.rotations, shape.size, shape.color);
+    }
+
+    private getRandomNumber(max: number): number {
+        return Math.round(Math.random() * max);
+    }
+
+    private getRandomShape(): ShapeContainer {
+        return this.getShapeByIndex(this.getRandomNumber(6));
     }
 
     private getPrediction(): Array<GridPointer> {

@@ -6,10 +6,43 @@
       html, body {
         background: black;
       }
+      canvas#main {
+        margin-right: 30px;
+      }
+      canvas#main {
+        float: left;
+        overflow: hidden;
+      }
+      .next-shapes-container {
+        width: 250px;
+        float: left;
+      }
+      .score-container h1,
+      .next-shapes-container h1 {
+        color: white;
+        font-family: sans-serif;
+      }
+      .next-shapes-container canvas {
+        border: 1px solid white;
+        margin-bottom: 10px;
+        float: left;
+        clear: both;
+      }
     </style>
   </head>
   <body>
     <canvas id="main" width="450" height="800"></canvas>
+    <div class="score-container">
+      <h1>Score: <span>0</span></h1>
+    </div>
+    <div class="next-shapes-container">
+      <h1>Next shapes:</h1>
+      <div>
+        <canvas id="next-shape-0" width="150" height="150"></canvas>
+        <canvas id="next-shape-1" width="150" height="150"></canvas>
+        <canvas id="next-shape-2" width="150" height="150"></canvas>
+      </div>
+    </div>
     <script src="./bundle.js"></script>
   </body>
 </html>

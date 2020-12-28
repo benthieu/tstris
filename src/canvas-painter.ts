@@ -4,39 +4,37 @@ import {tsConfig} from './ts-config';
 export class CanvasPainter {
     private width: number;
     private height: number;
-    private defaultFillStyle = '#FFF';
-    private defaultStrokeStyle = '#FFF';
-    private canvasRendering: CanvasRenderingContext2D;
+    private context: CanvasRenderingContext2D;
     constructor() {
-        this.canvasRendering = tsConfig.canvas;
-        this.width = this.canvasRendering.canvas.width;
-        this.height = this.canvasRendering.canvas.height;
+        this.context = tsConfig.canvas;
+        this.width = this.context.canvas.width;
+        this.height = this.context.canvas.height;
     }
 
     public drawPlayground(pointers: Array<GridPointer>): void {
         const boxHeight = Math.floor(this.height / tsConfig.rows);
         const boxWidth = Math.floor(this.width / tsConfig.cols);
 
-        this.canvasRendering.clearRect(0, 0, this.width, this.height);
+        this.context.clearRect(0, 0, this.width, this.height);
 
         for (let r = 0; r < tsConfig.rows; r++) {
             for (let c = 0; c < tsConfig.cols; c++) {
 
-                this.canvasRendering.fillStyle = this.defaultFillStyle;
-                this.canvasRendering.strokeStyle = this.defaultStrokeStyle;
-                this.canvasRendering.globalAlpha = 1;
+                this.context.fillStyle = tsConfig.defaultFillStyle;
+                this.context.strokeStyle = tsConfig.defaultStrokeStyle;
+                this.context.globalAlpha = 1;
 
                 const positionX = boxWidth * c;
                 const positionY = boxHeight * r;
-                this.canvasRendering.strokeRect(positionX, positionY, boxWidth, boxHeight);
+                this.context.strokeRect(positionX, positionY, boxWidth, boxHeight);
 
                 const isDrawn = pointers.find((pointer: GridPointer) => {
                     return pointer.x === c && pointer.y === r;
                 });
                 if (isDrawn) {
-                    this.canvasRendering.globalAlpha = isDrawn.onlyOutline ? 0.3 : 1;
-                    this.canvasRendering.fillStyle = isDrawn.color ? isDrawn.color : this.defaultFillStyle;
-                    this.canvasRendering.fillRect(positionX, positionY, boxWidth, boxHeight);
+                    this.context.globalAlpha = isDrawn.onlyOutline ? 0.3 : 1;
+                    this.context.fillStyle = isDrawn.color ? isDrawn.color : tsConfig.defaultFillStyle;
+                    this.context.fillRect(positionX, positionY, boxWidth, boxHeight);
                 }
             }
         }

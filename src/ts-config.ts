@@ -3,6 +3,11 @@ import {Shape} from './shape';
 
 export const tsConfig = {
     canvas: (document.getElementById('main') as HTMLCanvasElement).getContext('2d'),
+    nextShape0: (document.getElementById('next-shape-0') as HTMLCanvasElement).getContext('2d'),
+    nextShape1: (document.getElementById('next-shape-1') as HTMLCanvasElement).getContext('2d'),
+    nextShape2: (document.getElementById('next-shape-2') as HTMLCanvasElement).getContext('2d'),
+    defaultFillStyle: '#FFF',
+    defaultStrokeStyle: '#FFF',
     rows: 15,
     cols: 8,
     shapes: [
