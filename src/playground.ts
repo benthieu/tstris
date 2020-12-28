@@ -166,10 +166,6 @@ export class Playground implements Interactions {
         return Math.round(Math.random() * max);
     }
 
-    private getRandomShape(): ShapeContainer {
-        return this.getShapeByIndex(this.getRandomNumber(6));
-    }
-
     private getPrediction(): Array<GridPointer> {
         const prediction = this.shape.copy();
         while (!this.detectCollisionOrOutOfBounds(prediction.copy().moveDown())) {

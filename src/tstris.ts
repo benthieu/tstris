@@ -15,7 +15,6 @@ export class Tstris {
         })
         playground.nextShapes().subscribe((shapes: Array<number>) => {
             if (!!shapes.length) {
-                console.log(shapes);
                 new ShapePainter(shapes[0], tsConfig.nextShape0);
                 new ShapePainter(shapes[1], tsConfig.nextShape1);
                 new ShapePainter(shapes[2], tsConfig.nextShape2);
