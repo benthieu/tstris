@@ -7,7 +7,7 @@ import {ShapeContainer} from './shape-container';
 import {tsConfig} from './ts-config';
 
 export class Playground implements Interactions {
-    private allPointers: Array<GridPointer>;
+    private grid: Array<GridPointer>;
     private shape: ShapeContainer;
     private events: Events;
     private score$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
@@ -18,7 +18,7 @@ export class Playground implements Interactions {
     }
 
     public startNewGame(): void {
-        this.allPointers = new Array<GridPointer>();
+        this.grid = new Array<GridPointer>();
         this.nextShapes$.next([
             this.getRandomNumber(6),
             this.getRandomNumber(6),
@@ -54,7 +54,7 @@ export class Playground implements Interactions {
 
     public getPlayground(): Array<GridPointer> {
         return [
-            ...this.allPointers,
+            ...this.grid,
             ...this.shape.calculateCoordinates(),
             ...this.getPrediction()
         ];
@@ -74,7 +74,7 @@ export class Playground implements Interactions {
         if (!this.detectCollisionOrOutOfBounds(this.shape.copy().moveDown())) {
             this.shape.moveDown();
         } else {
-            this.allPointers.push(...this.shape.calculateCoordinates());
+            this.grid.push(...this.shape.calculateCoordinates());
             this.detectAndRemoveFullLine();
             this.insertNewShape();
         }
@@ -115,7 +115,7 @@ export class Playground implements Interactions {
             );
         });
         const collision = shape.calculateCoordinates().find((pointer: GridPointer) => {
-            return !!this.allPointers.find((playgroundPointer: GridPointer) => {
+            return !!this.grid.find((playgroundPointer: GridPointer) => {
                 return playgroundPointer.x === pointer.x && playgroundPointer.y === pointer.y;
             })
         });
@@ -126,10 +126,10 @@ export class Playground implements Interactions {
         const fullLines = this.detectFullLine();
         this.score$.next(this.score$.getValue() + fullLines.length * tsConfig.cols);
         fullLines.forEach((fullRow: number) => {
-            this.allPointers = this.allPointers.filter((playgroundPointer: GridPointer) => {
+            this.grid = this.grid.filter((playgroundPointer: GridPointer) => {
                 return playgroundPointer.y !== fullRow;
             });
-            this.allPointers = this.allPointers.map((playgroundPointer: GridPointer) => {
+            this.grid = this.grid.map((playgroundPointer: GridPointer) => {
                 if (playgroundPointer.y < fullRow) {
                     playgroundPointer.y++;
                 }
@@ -141,7 +141,7 @@ export class Playground implements Interactions {
     private detectFullLine(): Array<number> {
         const fullLines = new Array<number>();
         for (let row = 0; row < tsConfig.rows; row++) {
-            const foundPointers = this.allPointers.filter((playgroundPointer: GridPointer) => {
+            const foundPointers = this.grid.filter((playgroundPointer: GridPointer) => {
                 return playgroundPointer.y === row;
             });
             if (foundPointers.length === tsConfig.cols) {
