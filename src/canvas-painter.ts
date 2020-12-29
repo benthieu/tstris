@@ -19,7 +19,6 @@ export class CanvasPainter {
 
         for (let r = 0; r < tsConfig.rows; r++) {
             for (let c = 0; c < tsConfig.cols; c++) {
-
                 this.context.fillStyle = tsConfig.defaultFillStyle;
                 this.context.strokeStyle = tsConfig.defaultStrokeStyle;
                 this.context.globalAlpha = 1;
@@ -27,16 +26,12 @@ export class CanvasPainter {
                 const positionX = boxWidth * c;
                 const positionY = boxHeight * r;
                 this.context.strokeRect(positionX, positionY, boxWidth, boxHeight);
-
-                const isDrawn = pointers.find((pointer: GridPointer) => {
-                    return pointer.x === c && pointer.y === r;
-                });
-                if (isDrawn) {
-                    this.context.globalAlpha = isDrawn.onlyOutline ? 0.3 : 1;
-                    this.context.fillStyle = isDrawn.color ? isDrawn.color : tsConfig.defaultFillStyle;
-                    this.context.fillRect(positionX, positionY, boxWidth, boxHeight);
-                }
             }
         }
+        pointers.forEach((pointer: GridPointer) => {
+            this.context.globalAlpha = pointer.onlyOutline ? 0.3 : 1;
+            this.context.fillStyle = pointer.color ? pointer.color : tsConfig.defaultFillStyle;
+            this.context.fillRect(boxWidth * pointer.x, boxHeight * pointer.y, boxWidth, boxHeight);
+        });
     }
 }

@@ -9,9 +9,7 @@ export class ShapeContainer implements Interactions {
     constructor(
         private rotations: Array<Array<GridPointer>>,
         private size: number,
-        private color: string = "#FFF") { }
-
-    public initPointer(): void {
+        private color: string = "#FFF") {
         const fromLeft = Math.floor((tsConfig.cols - (this.size)) / 2);
         this.pointer = new GridPointer(fromLeft, - (this.size - 2));
     }

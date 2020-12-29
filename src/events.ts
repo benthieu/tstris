@@ -5,7 +5,6 @@ import {Playground} from './playground';
 export class Events {
     private keyPressedInterval: NodeJS.Timeout;
     private moveDownInterval: NodeJS.Timeout;
-    private moveDownPressedTimeout: NodeJS.Timeout;
     private keyDown = fromEvent<KeyboardEvent>(document, 'keydown');
     private keyUp = fromEvent<KeyboardEvent>(document, 'keyup');
     private keyEvents: Observable<KeyboardEvent>;
@@ -28,7 +27,8 @@ export class Events {
             if (event.type === "keydown" && !this.keyPressedInterval) {
                 switch (event.code) {
                     case 'ArrowUp':
-                        this.startEventAndInterval(() => this.playground.rotate());
+                        this.playground.rotate();
+                        this.tick$.next(true);
                         break;
                     case 'ArrowLeft':
                         this.startEventAndInterval(() => this.playground.moveLeft());
@@ -40,20 +40,10 @@ export class Events {
                         clearInterval(this.moveDownInterval);
                         this.moveDownInterval = null;
                         this.startEventAndInterval(() => this.playground.moveDown());
-                        this.moveDownPressedTimeout = setTimeout(() => {
-                            this.playground.moveAllTheWayDown();
-                            clearInterval(this.moveDownInterval);
-                            this.moveDownInterval = null;
-                            this.setMoveDownInterval();
-                            this.tick$.next(true);
-                        }, 1000);
                         break;
                 }
             } else if (event.type === "keyup") {
                 if (event.code === 'ArrowDown') {
-                    if (this.moveDownPressedTimeout) {
-                        clearTimeout(this.moveDownPressedTimeout);
-                    }
                     this.setMoveDownInterval();
                 }
                 clearInterval(this.keyPressedInterval);
@@ -68,7 +58,7 @@ export class Events {
         this.keyPressedInterval = setInterval(() => {
             event();
             this.tick$.next(true);
-        }, 500);
+        }, 150);
     }
 
     private setMoveDownInterval(): void {

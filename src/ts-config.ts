@@ -1,5 +1,5 @@
 import {GridPointer} from './grid-pointer';
-import {Shape} from './shape';
+import {Shape} from './shape.interface';
 
 export const tsConfig = {
     canvas: (document.getElementById('main') as HTMLCanvasElement).getContext('2d'),
@@ -8,8 +8,8 @@ export const tsConfig = {
     nextShape2: (document.getElementById('next-shape-2') as HTMLCanvasElement).getContext('2d'),
     defaultFillStyle: '#FFF',
     defaultStrokeStyle: '#FFF',
-    rows: 15,
-    cols: 8,
+    rows: 18,
+    cols: 10,
     shapes: [
         {
             /*

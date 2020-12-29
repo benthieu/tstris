@@ -1,5 +1,5 @@
 import {GridPointer} from './grid-pointer';
-import {Shape} from './shape';
+import {Shape} from './shape.interface';
 import {tsConfig} from './ts-config';
 
 export class ShapePainter {

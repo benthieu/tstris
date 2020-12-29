@@ -47,7 +47,6 @@ export class Playground implements Interactions {
         this.shape = this.getShapeByIndex(nextShapes.splice(0, 1)[0]);
         nextShapes.push(this.getRandomNumber(6));
         this.nextShapes$.next(nextShapes);
-        this.shape.initPointer();
         if (this.detectCollisionOrOutOfBounds(this.shape)) {
             this.startNewGame();
         }
@@ -78,11 +77,6 @@ export class Playground implements Interactions {
             this.allPointers.push(...this.shape.calculateCoordinates());
             this.detectAndRemoveFullLine();
             this.insertNewShape();
-        }
-    }
-    public moveAllTheWayDown(): void {
-        while (!this.detectCollisionOrOutOfBounds(this.shape.copy().moveDown())) {
-            this.shape.moveDown();
         }
     }
 
