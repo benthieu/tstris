@@ -1,6 +1,6 @@
-import {CanvasPainter} from './canvas-painter';
-import {Playground} from './playground';
-import {ShapePainter} from './shape-painter';
+import {CanvasPainter} from './output/canvas-painter';
+import {Playground} from './controller/playground';
+import {ShapePainter} from './output/shape-painter';
 import {tsConfig} from './ts-config';
 
 export class Tstris {

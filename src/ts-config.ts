@@ -1,5 +1,5 @@
-import {GridPointer} from './grid-pointer';
-import {Shape} from './shape.interface';
+import {GridPointer} from './controller/grid-pointer';
+import {Shape} from './controller/shape.interface';
 
 export const tsConfig = {
     canvas: (document.getElementById('main') as HTMLCanvasElement).getContext('2d'),
