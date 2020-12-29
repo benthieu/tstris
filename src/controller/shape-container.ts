@@ -1,6 +1,6 @@
 import {GridPointer} from './grid-pointer';
-import {Interactions} from './interactions.interface';
-import {tsConfig} from './ts-config';
+import {Interactions} from '../interactions/interactions.interface';
+import {tsConfig} from '../ts-config';
 
 export class ShapeContainer implements Interactions {
     public currentRotation = 0;

@@ -1,6 +1,6 @@
-import {GridPointer} from './grid-pointer';
-import {Shape} from './shape.interface';
-import {tsConfig} from './ts-config';
+import {GridPointer} from '../controller/grid-pointer';
+import {Shape} from '../controller/shape.interface';
+import {tsConfig} from '../ts-config';
 
 export class ShapePainter {
     private width: number;

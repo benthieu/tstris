@@ -1,6 +1,6 @@
 import {fromEvent, merge, Observable, Subject} from 'rxjs';
 import {distinctUntilChanged} from 'rxjs/operators';
-import {Playground} from './playground';
+import {Playground} from '../controller/playground';
 
 export class Events {
     private keyPressedInterval: NodeJS.Timeout;

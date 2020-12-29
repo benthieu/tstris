@@ -1,10 +1,10 @@
 import {BehaviorSubject, Observable} from 'rxjs';
 import {distinctUntilChanged} from 'rxjs/operators';
-import {Events} from './events';
+import {Events} from '../interactions/events';
 import {GridPointer} from './grid-pointer';
-import {Interactions} from './interactions.interface';
+import {Interactions} from '../interactions/interactions.interface';
 import {ShapeContainer} from './shape-container';
-import {tsConfig} from './ts-config';
+import {tsConfig} from '../ts-config';
 
 export class Playground implements Interactions {
     private grid: Array<GridPointer>;

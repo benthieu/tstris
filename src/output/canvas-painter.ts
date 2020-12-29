@@ -1,5 +1,5 @@
-import {GridPointer} from './grid-pointer';
-import {tsConfig} from './ts-config';
+import {GridPointer} from '../controller/grid-pointer';
+import {tsConfig} from '../ts-config';
 
 export class CanvasPainter {
     private width: number;
