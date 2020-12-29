@@ -1,4 +1,4 @@
-import {BehaviorSubject, Observable, ReplaySubject, Subject} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {distinctUntilChanged} from 'rxjs/operators';
 import {Events} from './events';
 import {GridPointer} from './grid-pointer';
