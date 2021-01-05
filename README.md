@@ -1,16 +1,16 @@
 # Tstris -> Tetris written in typescript
 
 First initialize project
-```shell
+```console
 npm install
 ```
 
 Start programming (hot reloading):
-```shell
+```console
 npm run start
 ```
 
 Build for production:
-```shell
+```console
 npm run build
 ```
