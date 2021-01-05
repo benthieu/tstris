@@ -29,7 +29,7 @@ export class CanvasPainter {
             }
         }
         pointers.forEach((pointer: GridPointer) => {
-            this.context.globalAlpha = pointer.onlyOutline ? 0.3 : 1;
+            this.context.globalAlpha = pointer.alpha ? pointer.alpha : 1;
             this.context.fillStyle = pointer.color ? pointer.color : tsConfig.defaultFillStyle;
             this.context.fillRect(boxWidth * pointer.x, boxHeight * pointer.y, boxWidth, boxHeight);
         });

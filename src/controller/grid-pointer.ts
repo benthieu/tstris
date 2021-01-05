@@ -2,12 +2,12 @@ export class GridPointer {
     public x: number;
     public y: number;
     public color: string;
-    public onlyOutline = false;
-    constructor(x: number, y: number, color: string = '', onlyOutline: boolean = false) {
+    public alpha: number;
+    constructor(x: number, y: number, color: string = '', alpha: number = 1) {
         this.x = x;
         this.y = y;
         this.color = color;
-        this.onlyOutline = onlyOutline;
+        this.alpha = alpha;
     }
 
     public moveRight(): void {
@@ -27,6 +27,6 @@ export class GridPointer {
     }
 
     public copy(): GridPointer {
-        return new GridPointer(this.x, this.y, this.color, this.onlyOutline);
+        return new GridPointer(this.x, this.y, this.color, this.alpha);
     }
 }

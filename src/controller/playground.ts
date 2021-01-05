@@ -5,13 +5,14 @@ import {GridPointer} from './grid-pointer';
 import {Interactions} from '../interactions/interactions.interface';
 import {ShapeContainer} from './shape-container';
 import {tsConfig} from '../ts-config';
+import {ShapePipeline} from './shape-pipeline';
 
 export class Playground implements Interactions {
     private grid: Array<GridPointer>;
     private shape: ShapeContainer;
     private events: Events;
-    private score$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
-    private nextShapes$: BehaviorSubject<Array<number>> = new BehaviorSubject<Array<number>>([]);
+    private score$ = new BehaviorSubject<number>(0);
+    private shapePipeLine = new ShapePipeline();
 
     constructor() {
         this.events = new Events(this);
@@ -19,11 +20,7 @@ export class Playground implements Interactions {
 
     public startNewGame(): void {
         this.grid = new Array<GridPointer>();
-        this.nextShapes$.next([
-            this.getRandomNumber(6),
-            this.getRandomNumber(6),
-            this.getRandomNumber(6)
-        ]);
+        this.shapePipeLine.reset();
         this.score$.next(0);
         this.insertNewShape();
     }
@@ -39,14 +36,11 @@ export class Playground implements Interactions {
     }
 
     public nextShapes(): Observable<Array<number>> {
-        return this.nextShapes$.asObservable();
+        return this.shapePipeLine.get();
     }
 
     public insertNewShape(): void {
-        const nextShapes = this.nextShapes$.getValue();
-        this.shape = this.getShapeByIndex(nextShapes.splice(0, 1)[0]);
-        nextShapes.push(this.getRandomNumber(6));
-        this.nextShapes$.next(nextShapes);
+        this.shape = this.getShapeByIndex(this.shapePipeLine.getNextShape());
         if (this.detectCollisionOrOutOfBounds(this.shape)) {
             this.startNewGame();
         }
@@ -156,17 +150,13 @@ export class Playground implements Interactions {
         return new ShapeContainer(shape.rotations, shape.size, shape.color);
     }
 
-    private getRandomNumber(max: number): number {
-        return Math.round(Math.random() * max);
-    }
-
     private getPrediction(): Array<GridPointer> {
         const prediction = this.shape.copy();
         while (!this.detectCollisionOrOutOfBounds(prediction.copy().moveDown())) {
             prediction.moveDown();
         }
         return prediction.calculateCoordinates().map((pointer: GridPointer) => {
-            pointer.onlyOutline = true;
+            pointer.alpha = 0.3;
             return pointer;
         });
     }
